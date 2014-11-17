@@ -1,118 +1,28 @@
 import csv, datareader, math, mlpy, matplotlib.pyplot as plt
 import numpy, random, scipy.optimize
 
-def sigmoid(val):
-    ''' 
-    This method computes the sigmoid function value for the given 
-    parameter
-    
-    Args:
-        val: input parameter
-        
-    Returns:
-        The value of the sigmoid function for the given parameter.
-    '''
-    return 1.0 / (1.0 + numpy.e ** (-1.0 * val))
-    
-def compute_hypothesis(X_row, theta):
-    ''' 
-    This method computes the hypothesis for the sample X_row, 
-    with the current theta values.
-    
-    Args:
-        X_row: a sample from the data set
-        theta: vector containing the theta values
-        
-    Returns:
-        The value of the hypothesis for the given data sample 
-        and theta values.
-    '''
-    theta = numpy.array(theta)
-    X_row = numpy.array(X_row)
-    theta.shape = (1, X_row.size)
-    h_theta = sigmoid(X_row.dot(theta.T))
-    return h_theta[0]
+def get_pca(X, n):
+	'''
+	Takes X and convert it into n dimensional space and returns the
+	answer
+	'''
+	pca = mlpy.PCA()
+	pca.learn(X)
+	return  pca.transform(X, k = n)
 
-def computeCost(theta, X, y):
-    ''' 
-    This method computes the cost for the data set X and theta 
-    values w.r.t. the target values y
-    
-    Args:
-        X: the data set
-        theta: vector containing the theta values
-        y: vector containing the true cost for the samples in the 
-        data set
+def plot_data(z, y):
+	# Plots the 2 D data 
+	plt.set_cmap(plt.cm.Paired)
+	fig1 = plt.figure(1)
+	title = plt.title("PCA on mushroom dataset")
+	plot = plt.scatter(z[:, 0], z[:, 1], c=y)
+	labx = plt.xlabel("First component")
+	laby = plt.ylabel("Second component") 
+	plt.show()
 
-    Returns:
-        A vector containing cost values for each sample in X, 
-        for the given theta values and true costs in y.
-    '''
-    new_theta = numpy.array(theta)
-    new_X = numpy.array(X)
-    new_y = numpy.array(y)
-    m = new_y.size
-    h = sigmoid(new_X.dot(new_theta.T))
-    new_h = numpy.array(h)
-    J = new_y.T.dot(numpy.log(new_h)) + (1.0 - new_y.T).dot(
-										numpy.log(1.0 - new_h))
-    cost = (-1.0 / m) * J.sum()
-#    print "Cost: ", cost
-    return cost
-      
-def predict(X_row, theta):
-    ''' 
-    This method applies the optimized model to the sample X_row, 
-    with the theta values found after optimizing the cost function,
-    to predict the result.
-    
-    Args:
-        X_row: a sample from the data set
-        theta: vector containing the theta values
-        
-    Returns:
-        The class predicted for the sample in X_row, using the given 
-        theta values.
-    '''
-    predicted_y = compute_hypothesis(X_row, theta)
-    if predicted_y >= 0.5:
-        return 1
-    else:
-        return 0
-    
-def check_test_data(test_X, test_y, theta):
-    ''' 
-    This method applies the optimized model to the test data set,
-    with the theta values found after optimizing the cost function. 
-    
-    Args:
-        test_X: the test data set
-        test_y: the test set's true results
-        theta: vector containing the theta values
-    '''        
-    correct = 0
-    for i in range(len(test_X)):
-        prediction = predict(test_X[i], theta)
-        #print "Predicted ", prediction, ", actual ", test_y[i]
-        if prediction == test_y[i]:
-            correct += 1
-    print "Correct predictions: ", correct, "/", len(test_X)
-
-def plot_data(X, y):
-    pca = mlpy.PCA()
-    pca.learn(X)
-    z = pca.transform(X, k=2)
-
-    plt.set_cmap(plt.cm.Paired)
-    fig1 = plt.figure(1)
-    title = plt.title("PCA on mushroom dataset")
-    plot = plt.scatter(z[:, 0], z[:, 1],c=y)
-    labx = plt.xlabel("First component")
-    laby = plt.ylabel("Second component")
-    plt.show()
 
 if __name__ == "__main__":
-    print "Logistic regression classification on Mushrooms data set"
+    print "Feature selection on Mushrooms data set"
     raw_input("Press Enter to continue...")
      
     print "Parsing input data..."
@@ -156,17 +66,12 @@ if __name__ == "__main__":
     proportion_factor, split, input_columns, output_column, 
     input_literal_columns, input_label_mapping, output_literal, 
     output_label_mapping)
+    no_of_dimension = input("Enter number of dimension you want to "
+							"reduce\n ")
+    z = get_pca(train_X, no_of_dimension)
     print "Parsing complete!\n"
+    print len(train_X[0])
+    print len(z[0])
+    # Uncomment the following line to plot the training data set
+    # plot_data(z, train_y)
    
-    # Uncomment the following line to use PCA and to plot the training data set
-    plot_data(train_X, train_y)
-   
-    print "Optimizing...\n"
-    initial_values = numpy.zeros((len(train_X[0]), 1))
-    myargs = (train_X, train_y)
-    theta = scipy.optimize.fmin_bfgs(computeCost, x0=initial_values, args=myargs)
-
-    print "Final theta: "
-    print theta
-    
-    check_test_data(test_X, test_y, theta)
