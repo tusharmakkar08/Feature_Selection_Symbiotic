@@ -36,10 +36,10 @@ def parse_input_no_conversion (input_file, custom_delimiter,
         input_file: The file containing the input data.
         custom_delimiter: The delimiter used in the input files.
         input_columns: Which columns in the input data are inputs (X). 
-					   If input_columns is empty, the data samples 
-					   have variable length.
+		If input_columns is empty, the data samples 
+		have variable length.
         output_column: Which column in the input data is output 
-					   value (y).
+		value (y).
         is_test: Set to True if we are parsing input from a test set.
     
     Returns:
@@ -122,13 +122,13 @@ def parse_input(input_file, custom_delimiter, input_columns,
                 for i in input_columns:
                     if input_literal_columns[i] == 1:
                         line_x.append(float(
-									input_label_mapping[i][row[i]]))
+						input_label_mapping[i][row[i]]))
                     else:
                         line_x.append(float(row[i]))
                 X.append(line_x)
                 if output_literal:
                     y.append(float(output_label_mapping[
-									row[output_column]]))
+						row[output_column]]))
                 else:
                     y.append(float(row[output_column]))
             else:
