@@ -19,7 +19,32 @@ def plot_data(z, y):
 	laby = plt.ylabel("Second component") 
 	plt.show()
 
+def train_decision_tree(train_X, train_y):
+    '''
+    Train Decision tree model 
+    Input : Training Data
+    Output : Classifier
+    '''
+    feature_sets = []
+    L = len(train_y)
+    for i in xrange(L):
+	    feature_sets.append(({tuple(train_X[i]):train_y[i]},train_y[i]))
+    return nltk.DecisionTreeClassifier.train(feature_sets)
 
+def test_decision_tree(test_X, test_y):
+    '''
+    Testing Decision tree model 
+    Input : Testing Data
+    Output : Testing Set in Decision Tree Format
+    '''
+    test_sets = []
+    L = len(test_y)
+    for i in xrange(L):
+	    test_sets.append(({tuple(test_X[i]):test_y[i]},test_y[i]))
+    return test_sets
+
+
+    
 if __name__ == "__main__":
     print "Feature selection on Mushrooms data set"
     raw_input("Press Enter to continue...")
@@ -76,14 +101,7 @@ if __name__ == "__main__":
     print len(z[0])
     # Uncomment the following line to plot the training data set
     # plot_data(z, train_y)
-    feature_sets = []
-    L = len(train_y)
-    for i in xrange(L):
-	    feature_sets.append(({tuple(train_X[i]):train_y[i]},train_y[i]))
-    test_sets = []
-    L = len(test_y)
-    for i in xrange(L):
-	    test_sets.append(({tuple(test_X[i]):test_y[i]},test_y[i]))
-    classifier = nltk.DecisionTreeClassifier.train(feature_sets)
-    print "yo"
-    print nltk.classify.accuracy(classifier, test_sets)
+    classifier = train_decision_tree(train_X, train_y)
+    print "Classification Done"
+    print "Accuracy is ", nltk.classify.accuracy(classifier, 
+	    test_decision_tree(test_X, test_y)),"%"
