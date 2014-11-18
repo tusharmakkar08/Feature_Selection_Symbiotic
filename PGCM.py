@@ -42,15 +42,14 @@ def makePairs(train_X, train_y, test_X, test_y):
 			(new_tr_X, new_tr_y, new_ts_X, new_ts_y) = makeData(
 			train_X, train_y, test_X, test_y, i, j)
 			classifier = mushrooms_bfgs.train_decision_tree(
-													new_tr_X, new_tr_y)
+									new_tr_X, new_tr_y)
 			PGCM_0[(i,j)] = nltk.classify.accuracy(classifier, 
 							mushrooms_bfgs.test_decision_tree(
 							new_ts_X, new_ts_y))*100
 	return PGCM_0
 
 if __name__ == "__main__":
-    (train_X, train_y, test_X, test_y) = mushrooms_bfgs.initialize(
-														float(99)/100)
+    (train_X, train_y, test_X, test_y) = mushrooms_bfgs.initialize(float(99)/100)
     print "Number of Training Data =",len(train_y)
     print "Number of Testing Data =",len(test_y)
     PGCM_0 = makePairs(train_X, train_y, test_X, test_y)
