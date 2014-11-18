@@ -38,7 +38,7 @@ def makePairs(train_X, train_y, test_X, test_y):
 	N = len(train_X[0]) - 1
 	print "Number of Features ", N
 	for i in xrange(1, N+1): 
-		for j in xrange(i+1, N+1):
+		for j in xrange(i, N+1):
 			(new_tr_X, new_tr_y, new_ts_X, new_ts_y) = makeData(
 			train_X, train_y, test_X, test_y, i, j)
 			classifier = mushrooms_bfgs.train_decision_tree(
