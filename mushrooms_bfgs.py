@@ -48,17 +48,18 @@ def test_decision_tree(test_X, test_y):
 	    test_sets.append(({tuple(test_X[i]):test_y[i]},test_y[i]))
     return test_sets
 
-def initialize():
+def initialize(ratio):
     """
 	Initialize the data entry and conversion to numerical values
 	Returns Training data and Testing Data 
+	Input : Ratio of Testing to Training
 	X : Input Features
 	Y : Output 
     """
     input_file = 'mushrooms_bfgs.data' 
     input_test_file = ''
     custom_delimiter = ',' 
-    proportion_factor = float(99)/100
+    proportion_factor = ratio
     split = True 
     input_columns = range(1, 23) 
     output_column = 0
@@ -97,7 +98,7 @@ def initialize():
     output_label_mapping)
     
 if __name__ == "__main__":
-    (train_X, train_y, test_X, test_y) = initialize()
+    (train_X, train_y, test_X, test_y) = initialize(float(99)/100)
     print "Number of Training Data =",len(train_y)
     print "Number of Testing Data =",len(test_y)
     no_of_dimension = input("Enter number of dimension you want to "
