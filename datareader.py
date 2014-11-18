@@ -46,7 +46,7 @@ def parse_input_no_conversion (input_file, custom_delimiter,
         A set (X, y) containing the input data.    
     '''
     data_reader = csv.reader(open(input_file, 'rb'), 
-							delimiter=custom_delimiter)
+						delimiter=custom_delimiter)
     if not is_test:
         X = []
         y = []
