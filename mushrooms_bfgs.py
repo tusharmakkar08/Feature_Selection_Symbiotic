@@ -1,5 +1,4 @@
-import csv, datareader, math, mlpy, matplotlib.pyplot as plt
-import numpy, random, scipy.optimize
+import datareader, mlpy, matplotlib.pyplot as plt, numpy, nltk
 
 def get_pca(X, n):
 	'''
@@ -29,7 +28,7 @@ if __name__ == "__main__":
     input_file = 'mushrooms_bfgs.data' 
     input_test_file = ''
     custom_delimiter = ',' 
-    proportion_factor = float(1)/2
+    proportion_factor = float(99)/100
     split = True 
     input_columns = range(1, 23) 
     output_column = 0
@@ -66,12 +65,25 @@ if __name__ == "__main__":
     proportion_factor, split, input_columns, output_column, 
     input_literal_columns, input_label_mapping, output_literal, 
     output_label_mapping)
+    print len(train_y)
+    print len(test_y)
     no_of_dimension = input("Enter number of dimension you want to "
-							"reduce\n ")
+							"reduce:\n")
     z = get_pca(train_X, no_of_dimension)
-    print "Parsing complete!\n"
+    print "Parsing complete!"
     print len(train_X[0])
+    print "PCA complete"
     print len(z[0])
     # Uncomment the following line to plot the training data set
     # plot_data(z, train_y)
-   
+    feature_sets = []
+    L = len(train_y)
+    for i in xrange(L):
+	    feature_sets.append(({tuple(train_X[i]):train_y[i]},train_y[i]))
+    test_sets = []
+    L = len(test_y)
+    for i in xrange(L):
+	    test_sets.append(({tuple(test_X[i]):test_y[i]},test_y[i]))
+    classifier = nltk.DecisionTreeClassifier.train(feature_sets)
+    print "yo"
+    print nltk.classify.accuracy(classifier, test_sets)
