@@ -1,3 +1,8 @@
+'''
+PCA and General Decision Tree algorithm
+Author: Tushar Makkar <tusharmakkar08[at]gmail.com>
+Date: 19.11.2014
+'''
 import datareader, mlpy, matplotlib.pyplot as plt, numpy, nltk
 
 def get_pca(X, n):
