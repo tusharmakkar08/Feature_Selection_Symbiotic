@@ -1,9 +1,9 @@
 '''
 PCA and General Decision Tree algorithm
 Author: Tushar Makkar <tusharmakkar08[at]gmail.com>
-Date: 19.11.2014
+Date: 18.11.2014
 '''
-import datareader, mlpy, matplotlib.pyplot as plt, numpy, nltk
+import datareader, mlpy, matplotlib.pyplot as plt, nltk
 
 def get_pca(X, n):
 	'''
@@ -48,13 +48,13 @@ def test_decision_tree(test_X, test_y):
 	    test_sets.append(({tuple(test_X[i]):test_y[i]},test_y[i]))
     return test_sets
 
-
-    
-if __name__ == "__main__":
-    print "Feature selection on Mushrooms data set"
-    raw_input("Press Enter to continue...")
-     
-    print "Parsing input data..."
+def initialize():
+    """
+	Initialize the data entry and conversion to numerical values
+	Returns Training data and Testing Data 
+	X : Input Features
+	Y : Output 
+    """
     input_file = 'mushrooms_bfgs.data' 
     input_test_file = ''
     custom_delimiter = ',' 
@@ -90,23 +90,26 @@ if __name__ == "__main__":
     output_literal = True
     output_label_mapping = {'p':1, 'e':0}
    
-    (train_X, train_y, test_X, test_y) = datareader.readInputData(
+    return datareader.readInputData(
     input_file, input_test_file, True, custom_delimiter, 
     proportion_factor, split, input_columns, output_column, 
     input_literal_columns, input_label_mapping, output_literal, 
     output_label_mapping)
-    print len(train_y)
-    print len(test_y)
+    
+if __name__ == "__main__":
+    (train_X, train_y, test_X, test_y) = initialize()
+    print "Number of Training Data =",len(train_y)
+    print "Number of Testing Data =",len(test_y)
     no_of_dimension = input("Enter number of dimension you want to "
 							"reduce:\n")
     z = get_pca(train_X, no_of_dimension)
     print "Parsing complete!"
-    print len(train_X[0])
+    print "Number of Features before PCA",len(train_X[0])
     print "PCA complete"
-    print len(z[0])
+    print "Number of Features after PCA",len(z[0])
     # Uncomment the following line to plot the training data set
     # plot_data(z, train_y)
     classifier = train_decision_tree(train_X, train_y)
     print "Classification Done"
     print "Accuracy is ", nltk.classify.accuracy(classifier, 
-	    test_decision_tree(test_X, test_y)),"%"
+	    test_decision_tree(test_X, test_y))*100,"%"
