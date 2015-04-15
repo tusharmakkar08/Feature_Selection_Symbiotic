@@ -24,7 +24,9 @@ def WilcoxonTest(Original_input, Symbiotic_output, Modified_GA_output):
                             Symbiotic_output, Original_input)
     z_stat_for_GA, p_val_for_GA = stats.ranksums(
                             Modified_GA_output, Original_input)
-    print p_val_for_GA , p_val_for_symbiotic
+    print p_val_for_symbiotic, p_val_for_GA
+    if max(p_val_for_GA , p_val_for_symbiotic) < 1e-100:
+        return -1
     if (p_val_for_GA > p_val_for_symbiotic): 
         print "Forest one is better"
         return 1

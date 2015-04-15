@@ -55,7 +55,7 @@ def test_initialize():
     #~ GreedySampling(PGCM_0, oldPGCM, N, "avg")
     featureImportanceDictionary = GreedySampling(PGCM_0, N, "avg")
     sortedFeatureDictionary = sorted(featureImportanceDictionary.items(), key=operator.itemgetter(1))
-    print sortedFeatureDictionary
+    return sortedFeatureDictionary
     #~ print len(sortedFeatureDictionary)
     
 if __name__ == "__main__":
