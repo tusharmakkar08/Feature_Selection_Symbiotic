@@ -4,6 +4,7 @@ Author: Tushar Makkar <tusharmakkar08[at]gmail.com>
 Date: 18.11.2014
 '''
 import datareader, mlpy, matplotlib.pyplot as plt, nltk
+from copy import deepcopy
 
 def get_pca(X, n):
 	'''
@@ -108,18 +109,22 @@ def featureRemoval(train_x, test_x, removedFeatures):
     train_x : training data featureset after feature removal
     test_x : testing data featureset after feature removal
     '''
-    for ind_featureList in train_x : 
+    temptrain_x = deepcopy(train_x)
+    temptest_x = deepcopy(test_x)
+    for ind_featureList in temptrain_x : 
 	for feature in removedFeatures:
 	    ind_featureList[feature] = -1
-    for ind_featureList in test_x : 
+    for ind_featureList in temptest_x : 
 	for feature in removedFeatures:
 	    ind_featureList[feature] = -1
-    return train_x, test_x
+    return temptrain_x, temptest_x
     
 if __name__ == "__main__":
     (train_X, train_y, test_X, test_y) = initialize(float(99)/100)
-    train_X, test_X = featureRemoval(train_X, test_X, [0,1,2])
-    print train_X[0], test_X[0]
+    #~ train_X1 = deepcopy(train_X[:])
+    #~ test_X1 = deepcopy(test_X[:])
+    #~ (train_X1, test_X1) = featureRemoval(train_X, test_X, [0,1,2])
+    #~ print train_X1[0], train_X[0]
     print "Number of Training Data =",len(train_y)
     print "Number of Testing Data =",len(test_y)
     no_of_dimension = input("Enter number of dimension you want to "
