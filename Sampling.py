@@ -11,7 +11,6 @@ def GreedySampling (PGCM_matrix, oldPGCM, numberOfFeatures, Aggregation):
     Returns the Sampled Matrix with the Aggregation Function used
     Args:
         PGCM_Matrix : Input PGCM Matrix
-        OldPGCM : PGCM matrix with features one less than PGCM input matrix
         numberOfFeatures : total number of features
         Aggregation : Aggregation used for sampling eg : min, max, avg
     Returns:
@@ -20,30 +19,40 @@ def GreedySampling (PGCM_matrix, oldPGCM, numberOfFeatures, Aggregation):
     X = {}
     Y = {}
     score = {}
-    for i in xrange(1, numberOfFeatures+1): 
+    for i in xrange(1, numberOfFeatures + 1): 
+        if Aggregation == "min":
+            score [i] = 100
+        else :
+            score[i] = 0 
+    for i in xrange(1, numberOfFeatures + 1): 
         X[i] = oldPGCM[(i,i)]
-        score[i] = 100
-        for j in xrange(i+1, numberOfFeatures+1):
+        for j in xrange(1, numberOfFeatures+1):
             Y[(i,j)] = PGCM_matrix[(i,j)]
             if Aggregation == "min":
                 score[i] = min(score[i], PGCM_matrix[(i,j)])
+                score[j] = min(score[j], PGCM_matrix[(i,j)])
             if Aggregation == "max":
                 score[i] = max(score[i], PGCM_matrix[(i,j)])
+                score[j] = max(score[j], PGCM_matrix[(i,j)])
             if Aggregation == "avg":
-                score[i] = score[i]+PGCM_matrix[(i,j)]
-                print score[i]
+                score[i] = score[i] + PGCM_matrix[(i,j)]
+                score[j] = score[j]+PGCM_matrix[(i,j)]
         if Aggregation == "avg":
             score[i] = score[i]/(numberOfFeatures-i+1)
+            score[j] = score[j]/(numberOfFeatures-j+1)
     print score
     
 def test_initialize():
-    (train_X, train_y, test_X, test_y) = mushrooms_bfgs.initialize(float(99)/100)
-    print "Number of Training Data =",len(train_y)
-    print "Number of Testing Data =",len(test_y)
-    PGCM_0 = PGCM.makePairs(train_X, train_y, test_X, test_y)
+    #~ (train_X, train_y, test_X, test_y) = mushrooms_bfgs.initialize(float(99)/100)
+    #~ print "Number of Training Data =",len(train_y)
+    #~ print "Number of Testing Data =",len(test_y)
+    #~ PGCM_0 = PGCM.makePairs(train_X, train_y, test_X, test_y)
+    fileread = open("PGCM_0",'r').read()
+    PGCM_0 = eval(fileread)
+    print PGCM_0
     oldPGCM = PGCM_0
     N = 22
-    GreedySampling(PGCM_0, oldPGCM, 22, "avg")
+    GreedySampling(PGCM_0, oldPGCM, N, "avg")
     
 if __name__ == "__main__":
     test_initialize()
