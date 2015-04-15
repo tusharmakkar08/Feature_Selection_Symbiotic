@@ -97,8 +97,29 @@ def initialize(ratio):
     input_literal_columns, input_label_mapping, output_literal, 
     output_label_mapping)
     
+def featureRemoval(train_x, test_x, removedFeatures):
+    '''
+    Removes features from a given Data
+    INPUT 
+    train_x : training data featureset
+    test_x : testing data featureset
+    removedFeatures : A list of features to be removed from the data
+    OUTPUT
+    train_x : training data featureset after feature removal
+    test_x : testing data featureset after feature removal
+    '''
+    for ind_featureList in train_x : 
+	for feature in removedFeatures:
+	    ind_featureList[feature] = -1
+    for ind_featureList in test_x : 
+	for feature in removedFeatures:
+	    ind_featureList[feature] = -1
+    return train_x, test_x
+    
 if __name__ == "__main__":
     (train_X, train_y, test_X, test_y) = initialize(float(99)/100)
+    train_X, test_X = featureRemoval(train_X, test_X, [0,1,2])
+    print train_X[0], test_X[0]
     print "Number of Training Data =",len(train_y)
     print "Number of Testing Data =",len(test_y)
     no_of_dimension = input("Enter number of dimension you want to "
