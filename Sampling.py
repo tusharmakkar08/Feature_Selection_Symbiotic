@@ -53,7 +53,7 @@ def test_initialize():
     #~ oldPGCM = PGCM_0
     N = 22
     #~ GreedySampling(PGCM_0, oldPGCM, N, "avg")
-    GreedySampling(PGCM_0, N, "avg")
+    GreedySampling(PGCM_0, N, "avg")g
     
 if __name__ == "__main__":
     test_initialize()
