@@ -4,7 +4,7 @@ Author: Tushar Makkar <tusharmakkar08[at]gmail.com>
 Date: 5.02.2015
 '''
 
-import datareader, mushrooms_bfgs, mlpy, nltk, PGCM
+import datareader, mushrooms_bfgs, mlpy, nltk, PGCM, operator
 
 def GreedySampling (PGCM_matrix, numberOfFeatures, Aggregation):
     '''
@@ -40,7 +40,7 @@ def GreedySampling (PGCM_matrix, numberOfFeatures, Aggregation):
     for i in xrange(1, numberOfFeatures + 1): 
         if Aggregation == "avg":
             score[i] = score[i] / (numberOfFeatures - 1)
-    print score
+    return score
     
 def test_initialize():
     #~ (train_X, train_y, test_X, test_y) = mushrooms_bfgs.initialize(float(99)/100)
@@ -53,7 +53,10 @@ def test_initialize():
     #~ oldPGCM = PGCM_0
     N = 22
     #~ GreedySampling(PGCM_0, oldPGCM, N, "avg")
-    GreedySampling(PGCM_0, N, "avg")g
+    featureImportanceDictionary = GreedySampling(PGCM_0, N, "avg")
+    sortedFeatureDictionary = sorted(featureImportanceDictionary.items(), key=operator.itemgetter(1))
+    print sortedFeatureDictionary
+    #~ print len(sortedFeatureDictionary)
     
 if __name__ == "__main__":
     test_initialize()

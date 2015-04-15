@@ -38,7 +38,7 @@ def makePairs(train_X, train_y, test_X, test_y):
 	N = len(train_X[0]) - 1
 	print "Number of Features ", N
 	for i in xrange(1, N+1): 
-		for j in xrange(i, N+1):
+		for j in xrange(i + 1, N+1):
 			(new_tr_X, new_tr_y, new_ts_X, new_ts_y) = makeData(
 			train_X, train_y, test_X, test_y, i, j)
 			classifier = mushrooms_bfgs.train_decision_tree(
@@ -46,10 +46,11 @@ def makePairs(train_X, train_y, test_X, test_y):
 			PGCM_0[(i,j)] = nltk.classify.accuracy(classifier, 
 							mushrooms_bfgs.test_decision_tree(
 							new_ts_X, new_ts_y))*100
+			print "Finding Accuracy for", i, j
 	return PGCM_0
 
 if __name__ == "__main__":
-    (train_X, train_y, test_X, test_y) = mushrooms_bfgs.initialize(float(99)/100)
+    (train_X, train_y, test_X, test_y) = mushrooms_bfgs.initialize(float(80)/100)
     print "Number of Training Data =",len(train_y)
     print "Number of Testing Data =",len(test_y)
     PGCM_0 = makePairs(train_X, train_y, test_X, test_y)
