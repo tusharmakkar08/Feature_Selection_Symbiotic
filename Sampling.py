@@ -6,7 +6,7 @@ Date: 5.02.2015
 
 import datareader, mushrooms_bfgs, mlpy, nltk, PGCM
 
-def GreedySampling (PGCM_matrix, oldPGCM, numberOfFeatures, Aggregation):
+def GreedySampling (PGCM_matrix, numberOfFeatures, Aggregation):
     '''
     Returns the Sampled Matrix with the Aggregation Function used
     Args:
@@ -25,9 +25,9 @@ def GreedySampling (PGCM_matrix, oldPGCM, numberOfFeatures, Aggregation):
         else :
             score[i] = 0 
     for i in xrange(1, numberOfFeatures + 1): 
-        X[i] = oldPGCM[(i,i)]
-        for j in xrange(1, numberOfFeatures+1):
-            Y[(i,j)] = PGCM_matrix[(i,j)]
+        #~ X[i] = oldPGCM[(i,i)]
+        for j in xrange(i + 1, numberOfFeatures+1):
+            #~ Y[(i,j)] = PGCM_matrix[(i,j)]
             if Aggregation == "min":
                 score[i] = min(score[i], PGCM_matrix[(i,j)])
                 score[j] = min(score[j], PGCM_matrix[(i,j)])
@@ -36,10 +36,10 @@ def GreedySampling (PGCM_matrix, oldPGCM, numberOfFeatures, Aggregation):
                 score[j] = max(score[j], PGCM_matrix[(i,j)])
             if Aggregation == "avg":
                 score[i] = score[i] + PGCM_matrix[(i,j)]
-                score[j] = score[j]+PGCM_matrix[(i,j)]
+                score[j] = score[j] + PGCM_matrix[(i,j)]
+    for i in xrange(1, numberOfFeatures + 1): 
         if Aggregation == "avg":
-            score[i] = score[i]/(numberOfFeatures-i+1)
-            score[j] = score[j]/(numberOfFeatures-j+1)
+            score[i] = score[i] / (numberOfFeatures - 1)
     print score
     
 def test_initialize():
@@ -49,10 +49,11 @@ def test_initialize():
     #~ PGCM_0 = PGCM.makePairs(train_X, train_y, test_X, test_y)
     fileread = open("PGCM_0",'r').read()
     PGCM_0 = eval(fileread)
-    print PGCM_0
-    oldPGCM = PGCM_0
+    #~ print PGCM_0
+    #~ oldPGCM = PGCM_0
     N = 22
-    GreedySampling(PGCM_0, oldPGCM, N, "avg")
+    #~ GreedySampling(PGCM_0, oldPGCM, N, "avg")
+    GreedySampling(PGCM_0, N, "avg")
     
 if __name__ == "__main__":
     test_initialize()
