@@ -59,5 +59,5 @@ def test_initialize():
     #~ print len(sortedFeatureDictionary)
     
 if __name__ == "__main__":
-    test_initialize()
+    print test_initialize()
 
