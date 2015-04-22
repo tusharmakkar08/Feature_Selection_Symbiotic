@@ -39,7 +39,9 @@ def GreedySampling (PGCM_matrix, numberOfFeatures, Aggregation):
                 score[j] = score[j] + PGCM_matrix[(i,j)]
     for i in xrange(1, numberOfFeatures + 1): 
         if Aggregation == "avg":
-            score[i] = score[i] / (numberOfFeatures - 1)
+            score[i] = score[i] / ((numberOfFeatures - 1)*100.00)
+        else:
+            score[i] = score[i] / 100.00
     return score
     
 def test_initialize():
@@ -53,7 +55,7 @@ def test_initialize():
     #~ oldPGCM = PGCM_0
     N = 22
     #~ GreedySampling(PGCM_0, oldPGCM, N, "avg")
-    featureImportanceDictionary = GreedySampling(PGCM_0, N, "avg")
+    featureImportanceDictionary = GreedySampling(PGCM_0, N, "max")
     sortedFeatureDictionary = sorted(featureImportanceDictionary.items(), key=operator.itemgetter(1))
     return sortedFeatureDictionary
     #~ print len(sortedFeatureDictionary)
