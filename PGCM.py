@@ -3,7 +3,7 @@ PCA and General Decision Tree algorithm
 Author: Tushar Makkar <tusharmakkar08[at]gmail.com>
 Date: 19.11.2014
 '''
-import datareader, mushrooms_bfgs, mlpy, nltk
+import datareader, mushrooms_bfgs, mlpy, nltk, datetime
 
 def make_feature_set(model_X, model_y, x, y):
 	'''
@@ -50,11 +50,14 @@ def makePairs(train_X, train_y, test_X, test_y):
 	return PGCM_0
 
 if __name__ == "__main__":
-    (train_X, train_y, test_X, test_y) = mushrooms_bfgs.initialize(float(80)/100)
-    print "Number of Training Data =",len(train_y)
-    print "Number of Testing Data =",len(test_y)
-    PGCM_0 = makePairs(train_X, train_y, test_X, test_y)
-    f = open("PGCM_0", 'w')
-    f.write(str(PGCM_0))
-    f.close()
-    print "Written to PGCM File"
+	timeStart = datetime.datetime.now()
+	(train_X, train_y, test_X, test_y) = mushrooms_bfgs.initialize(float(1)/2)
+	print "Number of Training Data =",len(train_y)
+	print "Number of Testing Data =",len(test_y)
+	PGCM_0 = makePairs(train_X, train_y, test_X, test_y)
+	print "Total time taken = ", datetime.datetime.now() - timeStart
+	f = open("PGCM_0", 'w')
+	f.write(str(PGCM_0))
+	f.close()
+	print "Written to PGCM File"
+	
