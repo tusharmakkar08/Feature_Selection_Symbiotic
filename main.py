@@ -4,10 +4,11 @@ Author: Tushar Makkar <tusharmakkar08[at]gmail.com>
 Date: 16.04.2015
 '''
 
-import mushrooms_bfgs, randomForest, Sampling, PGCM, WilcoxonTest
+import mushrooms_bfgs, randomForest, Sampling, PGCM, WilcoxonTest, datetime
 from copy import deepcopy
 
 if __name__ == '__main__':
+    timeStart = datetime.datetime.now()
     (train_X, train_y, test_X, test_y) = mushrooms_bfgs.initialize(float(80)/100)
     N = 22 # Number of Iterations at max can be equal to Number of features - 1
     NumberOfFeaturesRemoved = 0 
@@ -48,3 +49,4 @@ if __name__ == '__main__':
         NumberOfFeaturesRemoved += 1
     print "Total Number of Features Removed is ", NumberOfFeaturesRemoved
     print "Features Removed are", FeaturesRemoved
+    print "Total time taken = ", datetime.datetime.now() - timeStart
